@@ -135,6 +135,7 @@
             this.ms_ExportSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
             this.ms_ExportSave.Size = new System.Drawing.Size(185, 22);
             this.ms_ExportSave.Text = "Export Save";
+            this.ms_ExportSave.Click += new System.EventHandler(this.ms_ExportSave_Click);
             // 
             // ms_RenameSave
             // 
@@ -142,6 +143,7 @@
             this.ms_RenameSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
             this.ms_RenameSave.Size = new System.Drawing.Size(185, 22);
             this.ms_RenameSave.Text = "Rename Save";
+            this.ms_RenameSave.Click += new System.EventHandler(this.ms_RenameSave_Click);
             // 
             // toolStripMenuItem1
             // 
