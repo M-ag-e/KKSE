@@ -75,6 +75,7 @@
             this.label15 = new System.Windows.Forms.Label();
             this.updn_KoboldMetabolizeCapacity = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
+            this.SaveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.MenuStrip.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updn_Bri)).BeginInit();
@@ -257,6 +258,7 @@
             this.updn_Bri.Name = "updn_Bri";
             this.updn_Bri.Size = new System.Drawing.Size(57, 23);
             this.updn_Bri.TabIndex = 22;
+            this.updn_Bri.ValueChanged += new System.EventHandler(this.updn_Bri_ValueChanged);
             // 
             // updn_Sat
             // 
@@ -270,6 +272,7 @@
             this.updn_Sat.Name = "updn_Sat";
             this.updn_Sat.Size = new System.Drawing.Size(57, 23);
             this.updn_Sat.TabIndex = 21;
+            this.updn_Sat.ValueChanged += new System.EventHandler(this.updn_Sat_ValueChanged);
             // 
             // updn_Hue
             // 
@@ -283,6 +286,7 @@
             this.updn_Hue.Name = "updn_Hue";
             this.updn_Hue.Size = new System.Drawing.Size(57, 23);
             this.updn_Hue.TabIndex = 20;
+            this.updn_Hue.ValueChanged += new System.EventHandler(this.updn_Hue_ValueChanged);
             // 
             // label7
             // 
@@ -305,6 +309,7 @@
             this.updn_KoboldGrabCount.Name = "updn_KoboldGrabCount";
             this.updn_KoboldGrabCount.Size = new System.Drawing.Size(120, 23);
             this.updn_KoboldGrabCount.TabIndex = 18;
+            this.updn_KoboldGrabCount.ValueChanged += new System.EventHandler(this.updn_KoboldGrabCount_ValueChanged);
             // 
             // label6
             // 
@@ -327,6 +332,7 @@
             this.updn_KoboldBellySize.Name = "updn_KoboldBellySize";
             this.updn_KoboldBellySize.Size = new System.Drawing.Size(120, 23);
             this.updn_KoboldBellySize.TabIndex = 16;
+            this.updn_KoboldBellySize.ValueChanged += new System.EventHandler(this.updn_KoboldBellySize_ValueChanged);
             // 
             // label5
             // 
@@ -349,6 +355,7 @@
             this.updn_KoboldBreastSize.Name = "updn_KoboldBreastSize";
             this.updn_KoboldBreastSize.Size = new System.Drawing.Size(120, 23);
             this.updn_KoboldBreastSize.TabIndex = 14;
+            this.updn_KoboldBreastSize.ValueChanged += new System.EventHandler(this.updn_KoboldBreastSize_ValueChanged);
             // 
             // label4
             // 
@@ -371,6 +378,7 @@
             this.updn_KoboldDickSize.Name = "updn_KoboldDickSize";
             this.updn_KoboldDickSize.Size = new System.Drawing.Size(120, 23);
             this.updn_KoboldDickSize.TabIndex = 12;
+            this.updn_KoboldDickSize.ValueChanged += new System.EventHandler(this.updn_KoboldDickSize_ValueChanged);
             // 
             // label3
             // 
@@ -393,6 +401,7 @@
             this.updn_KoboldBallSize.Name = "updn_KoboldBallSize";
             this.updn_KoboldBallSize.Size = new System.Drawing.Size(120, 23);
             this.updn_KoboldBallSize.TabIndex = 10;
+            this.updn_KoboldBallSize.ValueChanged += new System.EventHandler(this.updn_KoboldBallSize_ValueChanged);
             // 
             // label2
             // 
@@ -415,6 +424,7 @@
             this.updn_KoboldFatSize.Name = "updn_KoboldFatSize";
             this.updn_KoboldFatSize.Size = new System.Drawing.Size(120, 23);
             this.updn_KoboldFatSize.TabIndex = 8;
+            this.updn_KoboldFatSize.ValueChanged += new System.EventHandler(this.updn_KoboldFatSize_ValueChanged);
             // 
             // label1
             // 
@@ -437,6 +447,7 @@
             this.updn_KoboldBaseSize.Name = "updn_KoboldBaseSize";
             this.updn_KoboldBaseSize.Size = new System.Drawing.Size(120, 23);
             this.updn_KoboldBaseSize.TabIndex = 6;
+            this.updn_KoboldBaseSize.ValueChanged += new System.EventHandler(this.updn_KoboldBaseSize_ValueChanged);
             // 
             // lbl_KoboldMaxEnergy
             // 
@@ -459,6 +470,7 @@
             this.updn_KoboldMaxEnergy.Name = "updn_KoboldMaxEnergy";
             this.updn_KoboldMaxEnergy.Size = new System.Drawing.Size(120, 23);
             this.updn_KoboldMaxEnergy.TabIndex = 4;
+            this.updn_KoboldMaxEnergy.ValueChanged += new System.EventHandler(this.updn_KoboldMaxEnergy_ValueChanged);
             // 
             // cbx_KoboldSelection
             // 
@@ -524,6 +536,7 @@
             this.updn_KoboldMoney.Name = "updn_KoboldMoney";
             this.updn_KoboldMoney.Size = new System.Drawing.Size(120, 23);
             this.updn_KoboldMoney.TabIndex = 21;
+            this.updn_KoboldMoney.ValueChanged += new System.EventHandler(this.updn_KoboldMoney_ValueChanged);
             // 
             // label16
             // 
@@ -556,6 +569,7 @@
             this.updn_KoboldDickEquip.Name = "updn_KoboldDickEquip";
             this.updn_KoboldDickEquip.Size = new System.Drawing.Size(120, 23);
             this.updn_KoboldDickEquip.TabIndex = 6;
+            this.updn_KoboldDickEquip.ValueChanged += new System.EventHandler(this.updn_KoboldDickEquip_ValueChanged);
             // 
             // label15
             // 
@@ -578,6 +592,7 @@
             this.updn_KoboldMetabolizeCapacity.Name = "updn_KoboldMetabolizeCapacity";
             this.updn_KoboldMetabolizeCapacity.Size = new System.Drawing.Size(120, 23);
             this.updn_KoboldMetabolizeCapacity.TabIndex = 4;
+            this.updn_KoboldMetabolizeCapacity.ValueChanged += new System.EventHandler(this.updn_KoboldMetabolizeCapacity_ValueChanged);
             // 
             // label11
             // 
@@ -588,6 +603,10 @@
             this.label11.Size = new System.Drawing.Size(44, 15);
             this.label11.TabIndex = 21;
             this.label11.Text = "v0.0.1";
+            // 
+            // SaveFileDialog
+            // 
+            this.SaveFileDialog.Filter = ".sav Files|*.sav";
             // 
             // Form1
             // 
@@ -676,5 +695,6 @@
         private NumericUpDown updn_Sat;
         private NumericUpDown updn_Hue;
         private Label label11;
+        private SaveFileDialog SaveFileDialog;
     }
 }

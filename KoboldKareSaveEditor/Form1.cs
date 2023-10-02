@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Globalization;
+using System.Text;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using System.Windows.Forms;
@@ -17,6 +18,7 @@ namespace KoboldKareSaveEditor
 
     public partial class Form1 : Form
     {
+        public bool autoUpdateUpDnBox = true;
         public string koboldSaveJSON = "";
         public List<string> koboldNameIDs = new List<string>();
         public List<int> koboldSaveLocation = new List<int>();
@@ -67,11 +69,33 @@ namespace KoboldKareSaveEditor
             Application.Exit();
         }
 
-        private void ms_OpenSave_Click(object sender, EventArgs e)
+        private void ResetOnLoad()
         {
+            autoUpdateUpDnBox = false;
             koboldSaveLocation.Clear();
             koboldSaveJSON.DefaultIfEmpty();
             cbx_KoboldSelection.Items.Clear();
+            updn_Bri.Value = 0;
+            updn_Hue.Value = 0;
+            updn_Sat.Value = 0;
+            updn_KoboldMaxEnergy.Value = 0;
+            updn_KoboldBaseSize.Value = 0;
+            updn_KoboldFatSize.Value = 0;
+            updn_KoboldBallSize.Value = 0;
+            updn_KoboldDickSize.Value = 0;
+            updn_KoboldBreastSize.Value = 0;
+            updn_KoboldBellySize.Value = 0;
+            updn_KoboldGrabCount.Value = 0;
+            updn_KoboldMetabolizeCapacity.Value = 0;
+            updn_KoboldDickEquip.Value = 0;
+            updn_KoboldMoney.Value = 0;
+            cbx_PlayerControlled.Checked= false;
+            autoUpdateUpDnBox = true;
+        }
+
+        private void ms_OpenSave_Click(object sender, EventArgs e)
+        {
+            ResetOnLoad();
             cbx_KoboldSelection.Text = "Please Select A Kobold"; //only god above knows how this works \/
             OpenFileDialog.InitialDirectory = "C:\\Users\\" + Environment.UserName + "\\AppData\\LocalLow\\Naelstrof\\KoboldKare\\";
             OpenFileDialog.ShowDialog();
@@ -129,21 +153,22 @@ namespace KoboldKareSaveEditor
             // It then works out the end by using the indexs found earlier and then minusing the string length, as all the first one did 
             // was offset the search by that amount.
             // step 4) profit?
+            autoUpdateUpDnBox = false;
             Console.WriteLine("Index Changed to " + cbx_KoboldSelection.SelectedIndex);
             int hueStart = koboldSaveJSON.IndexOf("hue\":", koboldSaveLocation[cbx_KoboldSelection.SelectedIndex]);
             int hueEnd = koboldSaveJSON.IndexOf(",", hueStart);
             string hString = koboldSaveJSON.Substring(hueStart + 5, (hueEnd - hueStart) - 5);
-            updn_Hue.Value = Convert.ToInt32(hString);
+            updn_Hue.Value = Convert.ToDecimal(hString);
 
             int saturationStart = koboldSaveJSON.IndexOf("saturation\":", koboldSaveLocation[cbx_KoboldSelection.SelectedIndex]);
             int saturationEnd = koboldSaveJSON.IndexOf(",", saturationStart);
             string sString = koboldSaveJSON.Substring(saturationStart + 12, (saturationEnd - saturationStart) - 12);
-            updn_Sat.Value = Convert.ToInt32(sString);
+            updn_Sat.Value = Convert.ToDecimal(sString);
 
             int brightnessStart = koboldSaveJSON.IndexOf("brightness\":", koboldSaveLocation[cbx_KoboldSelection.SelectedIndex]);
             int brightnessEnd = koboldSaveJSON.IndexOf(",", brightnessStart);
             string bString = koboldSaveJSON.Substring(brightnessStart + 12, (brightnessEnd - brightnessStart) - 12);
-            updn_Bri.Value = Convert.ToInt32(bString);
+            updn_Bri.Value = Convert.ToDecimal(bString);
 
             // why is HSB to RGB and vice versa so hard and mathy :(
 
@@ -207,6 +232,7 @@ namespace KoboldKareSaveEditor
             string isPlayerControlledString = koboldSaveJSON.Substring(isPlayerControlledStart + 20, (isPlayerControlledEnd - isPlayerControlledStart) - 20);
             bool isPlayerControlled = Convert.ToBoolean(isPlayerControlledString, CultureInfo.InvariantCulture);
             cbx_PlayerControlled.Checked = isPlayerControlled;
+            autoUpdateUpDnBox = true;
         }
 
         // Spawns a newly made dialog box because for some reason Forms doesnt have a basic text entry dialog popup, like what year is this?
@@ -252,10 +278,123 @@ namespace KoboldKareSaveEditor
             value = textBox.Text;
             return dialogResult;
         }
-        //This is going to take alot of spaghetti code and willpower
+
         private void ms_ExportSave_Click(object sender, EventArgs e)
         {
+            SaveFileDialog.InitialDirectory = "C:\\Users\\" + Environment.UserName + "\\AppData\\LocalLow\\Naelstrof\\KoboldKare\\";
+            SaveFileDialog.Title = "Save your Kobold Farm!";
+            if (SaveFileDialog.ShowDialog() == DialogResult.OK) {
+                if (SaveFileDialog.FileName != "")
+                {
+                    File.WriteAllText(SaveFileDialog.FileName, koboldSaveJSON);
+                }
+            }
+        }
+        //This is going to take alot of spaghetti code and willpower
+        private void UpdateKoboldJSON(decimal value, string variable)
+        {
+            int UpdateJSONStart = koboldSaveJSON.IndexOf(variable, koboldSaveLocation[cbx_KoboldSelection.SelectedIndex]);
+            int UpdateJSONEnd = koboldSaveJSON.IndexOf(",", UpdateJSONStart);
+            var stringBuild = new StringBuilder(koboldSaveJSON);
+            Console.WriteLine("Start: " + UpdateJSONStart +"| End: "+UpdateJSONEnd+"| Total Lines:"+(UpdateJSONEnd-UpdateJSONStart));
+            stringBuild.Remove(UpdateJSONStart, UpdateJSONEnd - UpdateJSONStart);
+            stringBuild.Insert(UpdateJSONStart, variable + value.ToString());
+            koboldSaveJSON= stringBuild.ToString();
+        }
+        
+        private void updn_Sat_ValueChanged(object sender, EventArgs e)
+        {
+            if (!autoUpdateUpDnBox) { return; }
+            UpdateKoboldJSON(updn_Sat.Value, "saturation\":");
+        }
 
+        private void updn_KoboldBaseSize_ValueChanged(object sender, EventArgs e)
+        {
+            if (!autoUpdateUpDnBox) { return; }
+                UpdateKoboldJSON(updn_KoboldBaseSize.Value, "baseSize\":");
+        }
+
+        private void updn_KoboldFatSize_ValueChanged(object sender, EventArgs e)
+        {
+            if (!autoUpdateUpDnBox) { return; }
+            UpdateKoboldJSON(updn_KoboldFatSize.Value, "fatSize\":");
+            
+        }
+
+        private void updn_KoboldBallSize_ValueChanged(object sender, EventArgs e)
+        {
+            if (!autoUpdateUpDnBox) { return; }
+            UpdateKoboldJSON(updn_KoboldBallSize.Value, "ballSize\":");
+            
+        }
+
+        private void updn_KoboldDickSize_ValueChanged(object sender, EventArgs e)
+        {
+            if (!autoUpdateUpDnBox) { return; }
+            UpdateKoboldJSON(updn_KoboldDickSize.Value, "dickSize\":");
+            
+        }
+
+        private void updn_KoboldBreastSize_ValueChanged(object sender, EventArgs e)
+        {
+            if (!autoUpdateUpDnBox) { return; }
+            UpdateKoboldJSON(updn_KoboldBreastSize.Value, "breastSize\":");
+            
+        }
+
+        private void updn_KoboldBellySize_ValueChanged(object sender, EventArgs e)
+        {
+            if (!autoUpdateUpDnBox) { return; }
+            UpdateKoboldJSON(updn_KoboldBellySize.Value, "bellySize\":");
+            
+        }
+
+        private void updn_KoboldGrabCount_ValueChanged(object sender, EventArgs e)
+        {
+            if (!autoUpdateUpDnBox) { return; }
+            UpdateKoboldJSON(updn_KoboldGrabCount.Value, "grabCount\":");
+            
+        }
+
+        private void updn_KoboldMoney_ValueChanged(object sender, EventArgs e)
+        {
+            if (!autoUpdateUpDnBox) { return; }
+            UpdateKoboldJSON(updn_KoboldMoney.Value, "money\":");
+            
+        }
+
+        private void updn_KoboldDickEquip_ValueChanged(object sender, EventArgs e)
+        {
+            if (!autoUpdateUpDnBox) { return; }
+            UpdateKoboldJSON(updn_KoboldDickEquip.Value, "dickEquip\":");
+            
+        }
+
+        private void updn_KoboldMetabolizeCapacity_ValueChanged(object sender, EventArgs e)
+        {
+            if (!autoUpdateUpDnBox) { return; }
+            UpdateKoboldJSON(updn_KoboldMetabolizeCapacity.Value, "metabolizeCapacitySize\":");
+            
+        }
+
+        private void updn_Bri_ValueChanged(object sender, EventArgs e)
+        {
+            if (!autoUpdateUpDnBox) { return; }
+            UpdateKoboldJSON(updn_Bri.Value, "brightness\":");
+            
+        }
+
+        private void updn_KoboldMaxEnergy_ValueChanged(object sender, EventArgs e)
+        {
+            if (!autoUpdateUpDnBox) { return; }
+            UpdateKoboldJSON(updn_KoboldMaxEnergy.Value, "maxEnergy\":");
+            
+        }
+
+        private void updn_Hue_ValueChanged(object sender, EventArgs e)
+        {
+            if (!autoUpdateUpDnBox) { return; }
+            UpdateKoboldJSON(updn_Hue.Value, "hue\":");
         }
     }
 }
