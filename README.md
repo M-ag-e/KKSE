@@ -5,3 +5,6 @@ A .sav editor that I made when I was bored one weekend, ill update it when I fee
 Im using this as a launching pad for teaching myself Windows Forms in c# 
 ```diff
 @@ Graphic Desgin is my passion @@
+```
+THIS REQUIRES THE DOT NET 6 DESKTOP RUNTIME
+YOU MIGHT BE PROMPTED TO DOWNLOAD IT
